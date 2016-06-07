@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="de.schumann.max.raportsheet.DetailActivity">
+
+    <item
+        android:id="@+id/action_save_raport"
+        android:title="@string/action_save_raport"
+        android:icon="@drawable/ic_save_white_24dp"
+        app:showAsAction="ifRoom"/>
+</menu>

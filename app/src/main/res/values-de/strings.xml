@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RaportSheet</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="customer_name">Name</string>
+    <string name="customer_phone">Tel. Nummer</string>
+    <string name="customer_street">Straße</string>
+    <string name="customer_city">Stadt</string>
+    <string name="customer_house_no">Haus nr.</string>
+    <string name="raport_date">Datum</string>
+    <string name="raport_customer_name">Kunden name</string>
+    <string name="raport_construction_site">Stadt</string>
+    <string name="raport_work_minutes">Minuten</string>
+    <string name="raport_work_description">Arbeitsbeschreibung</string>
+    <string name="title_activity_detail">Raport details</string>
+    <string name="action_save_raport">Raport speichern</string>
+</resources>
