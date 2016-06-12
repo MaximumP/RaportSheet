@@ -10,8 +10,10 @@
     <string name="raport_date">Date</string>
     <string name="raport_customer_name">Customer name</string>
     <string name="raport_construction_site">City</string>
-    <string name="raport_work_minutes">Minutes</string>
+    <string name="raport_work_hours">Hours</string>
     <string name="raport_work_description">Work description</string>
     <string name="title_activity_detail">Raport details</string>
     <string name="action_save_raport">Save raport</string>
+    <string name="action_print">Print</string>
+    <string name="error_date_format">Wrong date format d.M.yy</string>
 </resources>

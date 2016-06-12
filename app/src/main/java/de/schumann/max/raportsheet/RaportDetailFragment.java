@@ -1,9 +1,7 @@
 package de.schumann.max.raportsheet;
 
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,15 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import de.schumann.max.raportsheet.dataaccess.RaportContract.RaportEntry;
-import de.schumann.max.raportsheet.dataaccess.RaportProvider;
 import de.schumann.max.raportsheet.model.Raport;
 
 
@@ -40,6 +37,7 @@ public class RaportDetailFragment extends Fragment {
     private DateFormat dateFormat;
 
     private Raport raport;
+    private Locale locale;
 
     //TODO: validate after focus leave
     private TextView date;
@@ -47,7 +45,7 @@ public class RaportDetailFragment extends Fragment {
     private TextView customerCity;
     private Button addCustomer;
     private TextView workDescription;
-    private TextView workMinutes;
+    private TextView workHours;
 
     private OnFragmentInteractionListener mListener;
 
@@ -78,7 +76,8 @@ public class RaportDetailFragment extends Fragment {
         } else {
             raport = null;
         }
-        dateFormat = new SimpleDateFormat("d.M.yy", getResources().getConfiguration().locale);
+        locale = getResources().getConfiguration().locale;
+        dateFormat = new SimpleDateFormat("d.M.yy", locale);
         setHasOptionsMenu(true);
     }
 
@@ -91,7 +90,7 @@ public class RaportDetailFragment extends Fragment {
         customerName = (TextView) view.findViewById(R.id.raport_customer_text);
         customerCity = (TextView) view.findViewById(R.id.raport_city_text);
         workDescription = (TextView) view.findViewById(R.id.raport_work_description);
-        workMinutes = (TextView) view.findViewById(R.id.raport_work_minutes);
+        workHours = (TextView) view.findViewById(R.id.raport_work_minutes);
         addCustomer = (Button) view.findViewById(R.id.add_customer_button);
 
         if (raport != null) {
@@ -99,10 +98,10 @@ public class RaportDetailFragment extends Fragment {
             customerName.setText(raport.getCustomer().getName());
             customerCity.setText(raport.getCustomer().getCity());
             workDescription.setText(raport.getWorkDescription());
-            workMinutes.setText(raport.getWorkMinutes());
+            workHours.setText(raport.getWorkMinutes());
         } else {
             Date today = new Date();
-            String sDate = dateFormat.format(today);
+            String sDate = new SimpleDateFormat("dd.MM.yyyy", locale).format(today);
             date.setText(sDate);
         }
         // Inflate the layout for this fragment
@@ -121,19 +120,9 @@ public class RaportDetailFragment extends Fragment {
 
         switch (id) {
             case R.id.action_save_raport:
-                //TODO: validate
-                ContentValues values = new ContentValues();
-                values.put(RaportEntry.COLUMN_RAPORT_DATE, date.getText().toString());
-                values.put(RaportEntry.COLUMN_RAPORT_CUSTOMER_CITY, customerCity.getText().toString());
-                values.put(RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME, customerName.getText().toString());
-                values.put(RaportEntry.COLUMN_RAPORT_WORK_DESCRIPTION, workDescription.getText().toString());
-                values.put(RaportEntry.COLUMN_RAPORT_WORK_MINUTES, workMinutes.getText().toString());
-                Uri uri = getContext().getContentResolver().insert(RaportEntry.CONTENT_URI, values);
-                Toast.makeText(getContext(), "inserted" + uri, Toast.LENGTH_LONG).show();
+                saveRaport();
+                getActivity().onBackPressed();
                 return true;
-
-            default:
-                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -150,7 +139,7 @@ public class RaportDetailFragment extends Fragment {
             e.printStackTrace();
         }
         raport.setWorkDescription(workDescription.getText().toString());
-        raport.setWorkMinutes(Integer.parseInt(workMinutes.getText().toString()));
+        raport.setWorkMinutes(Integer.parseInt(workHours.getText().toString()));
         if (raport.getCustomer() != null) {
             raport.getCustomer().setName(customerName.getText().toString());
             raport.getCustomer().setCity(customerCity.getText().toString());
@@ -174,6 +163,28 @@ public class RaportDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void saveRaport(){
+        //TODO: validate
+        Date inDate;
+        double hours;
+        long ticks;
+        try {
+            inDate = new SimpleDateFormat("d.M.yy", locale).parse(date.getText().toString());
+            hours = Double.parseDouble(workHours.getText().toString());
+            ticks = inDate.getTime();
+        } catch (ParseException e) {
+            date.setError(getString(R.string.error_date_format));
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(RaportEntry.COLUMN_RAPORT_DATE, ticks);
+        values.put(RaportEntry.COLUMN_RAPORT_CUSTOMER_CITY, customerCity.getText().toString());
+        values.put(RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME, customerName.getText().toString());
+        values.put(RaportEntry.COLUMN_RAPORT_WORK_DESCRIPTION, workDescription.getText().toString());
+        values.put(RaportEntry.COLUMN_RAPORT_WORK_HOURS, hours);
+        getContext().getContentResolver().insert(RaportEntry.CONTENT_URI, values);
     }
 
     /**

@@ -21,11 +21,11 @@ public class RaportDbHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_RAPORT_TABLE = "CREATE TABLE " + RaportEntry.TABLE_NAME  + " (" +
                 RaportEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                RaportEntry.COLUMN_RAPORT_DATE + " TEXT NOT NULL, " +
+                RaportEntry.COLUMN_RAPORT_DATE + " INTEGER NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME + " TEXT NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_CUSTOMER_CITY + " TEXT NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_WORK_DESCRIPTION + " TEXT NOT NULL, " +
-                RaportEntry.COLUMN_RAPORT_WORK_MINUTES + " INTEGER NOT NULL );";
+                RaportEntry.COLUMN_RAPORT_WORK_HOURS + " REAL NOT NULL );";
 
         sqLiteDatabase.execSQL(SQL_CREATE_RAPORT_TABLE);
     }

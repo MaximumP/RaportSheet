@@ -43,6 +43,7 @@ public class RaportProvider extends ContentProvider {
     }
 
     private Cursor getRaports(String[] projection, String sortOrder) {
+        queryBuilder.setTables(RaportContract.RaportEntry.TABLE_NAME);
         return queryBuilder.query(dbHelper.getReadableDatabase(),
                 projection,
                 null,
@@ -71,7 +72,7 @@ public class RaportProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
+    public synchronized int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
         int rowsDeleted = 0;
@@ -109,7 +110,7 @@ public class RaportProvider extends ContentProvider {
     }
 
     @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
+    public synchronized Uri insert(@NonNull Uri uri, ContentValues values) {
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
         Uri returnUri;
@@ -162,7 +163,7 @@ public class RaportProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, ContentValues values, String selection,
+    public synchronized int update(@NonNull Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         final int match = uriMatcher.match(uri);
         final SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -182,7 +183,7 @@ public class RaportProvider extends ContentProvider {
     }
 
     @Override
-    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+    public synchronized int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         final SQLiteDatabase database = dbHelper.getWritableDatabase();
         final int match = uriMatcher.match(uri);
 
@@ -208,8 +209,7 @@ public class RaportProvider extends ContentProvider {
 
     private static UriMatcher buildMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT, RAPORT);
-        matcher.addURI(RaportContract.CONTENT_AUTHORITY , RaportContract.PATH_RAPORT + "/#", RAPORT);
+        matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT + "/#", RAPORT);
         matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT, RAPORTS);
         matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT + "/*/*", RAPORTS_BETWEEN_DATES);
         return matcher;

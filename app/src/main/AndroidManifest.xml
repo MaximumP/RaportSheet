@@ -30,7 +30,8 @@
 
         <provider
             android:name=".dataaccess.RaportProvider"
-            android:authorities="de.schumann.max.raportsheet">
+            android:authorities="de.schumann.max.raportsheet"
+            android:exported="false">
         </provider>
     </application>
 

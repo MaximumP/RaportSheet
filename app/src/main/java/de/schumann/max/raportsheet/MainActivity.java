@@ -1,19 +1,13 @@
 package de.schumann.max.raportsheet;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.Messenger;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import de.schumann.max.raportsheet.dummy.DummyContent;
 
 public class MainActivity
         extends AppCompatActivity
@@ -40,7 +34,6 @@ public class MainActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             final Intent showDetail = new Intent(this, DetailActivity.class);
-            showDetail.putExtra(DetailActivity.EXTRA_RAPORT_HANDLER, new Messenger(raportHandler));
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -50,38 +43,9 @@ public class MainActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(Cursor item) {
 
     }
-
-    @SuppressLint("HandlerLeak")
-    private Handler raportHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            //TODO: handle incoming detail
-        }
-    };
 }

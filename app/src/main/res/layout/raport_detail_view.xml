@@ -1,69 +1,77 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:context="de.schumann.max.raportsheet.RaportDetailFragment"
-              android:orientation="vertical"
-              android:padding="10dp">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="de.schumann.max.raportsheet.RaportDetailFragment">
 
-    <EditText
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/raport_date"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/raport_date"/>
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <EditText
+            android:id="@+id/raport_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="55dp">
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:hint="@string/raport_date"
+            android:inputType="date" />
 
-            <EditText
-                android:layout_width="fill_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/raport_customer_text"
-                android:hint="@string/raport_customer_name"/>
+                android:layout_marginRight="55dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:layout_width="fill_parent"
+                <EditText
+                    android:id="@+id/raport_customer_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/raport_customer_name"
+                    android:inputType="textCapWords" />
+
+                <EditText
+                    android:id="@+id/raport_city_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/raport_construction_site"
+                    android:inputType="textCapWords" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/add_customer_button"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/raport_city_text"
-                android:hint="@string/raport_construction_site"/>
-        </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@android:drawable/ic_menu_myplaces"
+                android:onClick="onAddCustomerButton" />
+        </RelativeLayout>
 
-        <Button
-            android:layout_width="50dp"
+        <EditText
+            android:id="@+id/raport_work_description"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/add_customer_button"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:background="@android:drawable/ic_menu_myplaces"
-            android:onClick="onAddCustomerButton"/>
-    </RelativeLayout>
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:hint="@string/raport_work_description"
+            android:inputType="textCapSentences|textMultiLine" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/raport_work_description"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/raport_work_description"/>
+        <EditText
+            android:id="@+id/raport_work_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:hint="@string/raport_work_hours"
+            android:inputType="number|numberDecimal" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/raport_work_minutes"
-        android:layout_gravity="center_horizontal"
-        android:hint="@string/raport_work_minutes"/>
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
