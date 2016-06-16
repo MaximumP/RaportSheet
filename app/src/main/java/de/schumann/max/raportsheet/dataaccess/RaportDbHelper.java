@@ -25,7 +25,8 @@ public class RaportDbHelper extends SQLiteOpenHelper{
                 RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME + " TEXT NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_CUSTOMER_CITY + " TEXT NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_WORK_DESCRIPTION + " TEXT NOT NULL, " +
-                RaportEntry.COLUMN_RAPORT_WORK_HOURS + " REAL NOT NULL );";
+                RaportEntry.COLUMN_RAPORT_WORK_HOURS + " REAL NOT NULL," +
+                RaportEntry.COLUMN_RAPORT_PRINTED + "INTEGER DEFAULT 0);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_RAPORT_TABLE);
     }

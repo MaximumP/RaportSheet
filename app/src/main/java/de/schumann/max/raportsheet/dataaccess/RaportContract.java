@@ -37,6 +37,7 @@ public class RaportContract {
         public static final String COLUMN_RAPORT_CUSTOMER_CITY = "raport_customer_city";
         public static final String COLUMN_RAPORT_WORK_DESCRIPTION = "raport_work_description";
         public static final String COLUMN_RAPORT_WORK_HOURS = "raport_work_hours";
+        public static final String COLUMN_RAPORT_PRINTED = "raport_printed";
 
         public static Uri buildRaportUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
