@@ -170,7 +170,7 @@ public class RaportProvider extends ContentProvider {
         int updatedRows = 0;
 
         switch (match) {
-            case RAPORT:
+            case RAPORTS:
                 updatedRows = db.update(RaportContract.RaportEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             default:
