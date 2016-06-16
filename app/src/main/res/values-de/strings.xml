@@ -16,4 +16,6 @@
     <string name="action_save_raport">Raport speichern</string>
     <string name="action_print">Drucken</string>
     <string name="error_date_format">Falsches Datumsformat t.M.jj</string>
+    <string name="action_delete_raport">Raport löschen</string>
+    <string name="raport_total_hours">Gesammt Stunden</string>
 </resources>

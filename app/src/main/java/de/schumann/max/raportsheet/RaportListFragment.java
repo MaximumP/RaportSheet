@@ -1,8 +1,8 @@
 package de.schumann.max.raportsheet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import de.schumann.max.raportsheet.dataaccess.RaportContract;
+import de.schumann.max.raportsheet.model.Raport;
 import de.schumann.max.raportsheet.util.Printer;
 import de.schumann.max.raportsheet.util.RaportCursorAdapter;
 
@@ -58,27 +59,15 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Object test = cursorAdapter.getItem(i);
+                Cursor cursor = (Cursor) cursorAdapter.getItem(i);
+                final Intent detailIntent = new Intent(getContext(), DetailActivity.class);
+                detailIntent.putExtra(DetailActivity.EXTRA_RAPORT_ITEM, new Raport(cursor));
+                startActivity(detailIntent);
             }
         });
 
-        Context context = listView.getContext();
-        String[] projection = new String[]{
-                RaportContract.RaportEntry.COLUMN_RAPORT_DATE,
-                RaportContract.RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME
-        };
-        int [] to = new int[]{ R.id.id, R.id.content };
+        setAdapter(listView);
 
-        // Set the adapter
-        getLoaderManager().initLoader(0, null, this);
-        cursorAdapter = new RaportCursorAdapter(
-                context,
-                R.layout.raport_list_item,
-                null,
-                projection,
-                to,
-                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
-        listView.setAdapter(cursorAdapter);
         return listView;
     }
 
@@ -161,5 +150,25 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Cursor item);
+    }
+
+    private void setAdapter(ListView listView) {
+        String[] projection = new String[]{
+                RaportContract.RaportEntry.COLUMN_RAPORT_DATE,
+                RaportContract.RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME
+        };
+        int [] to = new int[]{ R.id.id, R.id.content };
+
+        // Set the adapter
+        getLoaderManager().initLoader(0, null, this);
+        cursorAdapter = new RaportCursorAdapter(
+                listView.getContext(),
+                R.layout.raport_list_item,
+                null,
+                projection,
+                to,
+                CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
+
+        listView.setAdapter(cursorAdapter);
     }
 }

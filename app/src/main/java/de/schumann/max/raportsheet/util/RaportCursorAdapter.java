@@ -12,6 +12,8 @@ import de.schumann.max.raportsheet.R;
 
 /**
  * Created by max on 09.06.16.
+ *
+ * Overrides the SimpleCursorAdapter to format the date output since it is a long(ticks) value
  */
 public class RaportCursorAdapter extends SimpleCursorAdapter {
     public RaportCursorAdapter(Context context, int layout, Cursor c, String[] from, int[] to) {

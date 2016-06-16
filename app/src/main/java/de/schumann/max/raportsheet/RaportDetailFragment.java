@@ -10,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -34,7 +33,6 @@ import de.schumann.max.raportsheet.model.Raport;
 public class RaportDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_RAPORT = "Raport";
-    private DateFormat dateFormat;
 
     private Raport raport;
     private Locale locale;
@@ -43,11 +41,9 @@ public class RaportDetailFragment extends Fragment {
     private TextView date;
     private TextView customerName;
     private TextView customerCity;
-    private Button addCustomer;
+    //private Button addCustomer;
     private TextView workDescription;
     private TextView workHours;
-
-    private OnFragmentInteractionListener mListener;
 
     public RaportDetailFragment() {
         // Required empty public constructor
@@ -63,7 +59,7 @@ public class RaportDetailFragment extends Fragment {
     public static RaportDetailFragment newInstance(Raport raport) {
         RaportDetailFragment fragment = new RaportDetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_RAPORT, raport);
+        args.putSerializable(ARG_RAPORT, raport);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,13 +67,13 @@ public class RaportDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            raport = (Raport) getArguments().getSerializable(ARG_RAPORT);
+        Bundle args = getArguments();
+        if (args != null) {
+            raport = (Raport) args.getSerializable(ARG_RAPORT);
         } else {
             raport = null;
         }
         locale = getResources().getConfiguration().locale;
-        dateFormat = new SimpleDateFormat("d.M.yy", locale);
         setHasOptionsMenu(true);
     }
 
@@ -91,17 +87,20 @@ public class RaportDetailFragment extends Fragment {
         customerCity = (TextView) view.findViewById(R.id.raport_city_text);
         workDescription = (TextView) view.findViewById(R.id.raport_work_description);
         workHours = (TextView) view.findViewById(R.id.raport_work_minutes);
-        addCustomer = (Button) view.findViewById(R.id.add_customer_button);
+        //addCustomer = (Button) view.findViewById(R.id.add_customer_button);
 
+        String sDate;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", locale);
         if (raport != null) {
-            date.setText(raport.getDate().toString());
-            customerName.setText(raport.getCustomer().getName());
-            customerCity.setText(raport.getCustomer().getCity());
+            sDate = dateFormat.format(raport.getDate());
+            date.setText(sDate);
+            customerName.setText(raport.getCustomer());
+            customerCity.setText(raport.getCustomer());
             workDescription.setText(raport.getWorkDescription());
-            workHours.setText(raport.getWorkMinutes());
+            workHours.setText(Double.toString(raport.getWorkHours()));
         } else {
             Date today = new Date();
-            String sDate = new SimpleDateFormat("dd.MM.yyyy", locale).format(today);
+            sDate = dateFormat.format(today);
             date.setText(sDate);
         }
         // Inflate the layout for this fragment
@@ -123,6 +122,10 @@ public class RaportDetailFragment extends Fragment {
                 saveRaport();
                 getActivity().onBackPressed();
                 return true;
+            case R.id.action_delete_raport:
+                deleteRaport();
+                getActivity().onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -133,17 +136,16 @@ public class RaportDetailFragment extends Fragment {
         super.onSaveInstanceState(bundle);
 
         try {
-            raport.setDate(dateFormat.parse(date.getText().toString()));
+            raport.setDate(new SimpleDateFormat("dd.MM.yyyy", locale)
+                    .parse(date.getText().toString()));
         } catch (ParseException e) {
             //TODO: handle exception
             e.printStackTrace();
         }
         raport.setWorkDescription(workDescription.getText().toString());
-        raport.setWorkMinutes(Integer.parseInt(workHours.getText().toString()));
-        if (raport.getCustomer() != null) {
-            raport.getCustomer().setName(customerName.getText().toString());
-            raport.getCustomer().setCity(customerCity.getText().toString());
-        }
+        raport.setWorkHours(Integer.parseInt(workHours.getText().toString()));
+        raport.setCustomer(customerName.getText().toString());
+        raport.setCity(customerCity.getText().toString());
 
         bundle.putSerializable(Raport.RAPORT_MODEL, raport);
     }
@@ -152,7 +154,7 @@ public class RaportDetailFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+            //mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -162,7 +164,7 @@ public class RaportDetailFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
     }
 
     private void saveRaport(){
@@ -184,7 +186,20 @@ public class RaportDetailFragment extends Fragment {
         values.put(RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME, customerName.getText().toString());
         values.put(RaportEntry.COLUMN_RAPORT_WORK_DESCRIPTION, workDescription.getText().toString());
         values.put(RaportEntry.COLUMN_RAPORT_WORK_HOURS, hours);
-        getContext().getContentResolver().insert(RaportEntry.CONTENT_URI, values);
+        if (raport == null || raport.getId() == 0)
+            getContext().getContentResolver().insert(RaportEntry.CONTENT_URI, values);
+        else
+            getContext().getContentResolver()
+                    .update(RaportEntry.CONTENT_URI, values, "_id = ?",
+                            new String[] {Long.toString(raport.getId())});
+    }
+
+    private void deleteRaport() {
+        if (raport != null && raport.getId() != 0){
+            getContext().getContentResolver()
+                    .delete(RaportEntry.CONTENT_URI, "_id = ?",
+                            new String[] {Long.toString(raport.getId())});
+        }
     }
 
     /**
