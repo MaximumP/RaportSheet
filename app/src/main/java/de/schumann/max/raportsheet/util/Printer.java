@@ -43,7 +43,7 @@ public class Printer {
         });
         String html = createHtml(cursor);
         Log.i("Print content", html);
-        webView.loadData(html, "text/HTML", "UTF-8");
+        webView.loadData(html, "text/HTML; charset=utf-8", "utf-8");
     }
 
     private void createWebPrintJob(WebView view) {
@@ -54,9 +54,10 @@ public class Printer {
 
     private String createHtml(Cursor cursor) {
         StringBuilder htmlBuilder = new StringBuilder();
+        Double sumHours = 0.0d;
         htmlBuilder.append("<!DOCTYPE HTML><html><head><style type='text/css'>" +
                 ".date,.customer {padding-right: 4em;}" +
-                "</style></head><body>");
+                "</style><meta charset='UTF-8'></head><body>");
 
         cursor.moveToFirst();
 
@@ -82,19 +83,26 @@ public class Printer {
             htmlBuilder.append("</span>");
             htmlBuilder.append("</div><br />");
             // work description
-            htmlBuilder.append("<span><b>");
+            htmlBuilder.append("<div><span><b>");
             htmlBuilder.append(context.getString(R.string.raport_work_description));
             htmlBuilder.append(": </b>");
             htmlBuilder.append(cursor.getString(4));
-            htmlBuilder.append("</span><br />");
+            htmlBuilder.append("</span>");
             // work time
-            htmlBuilder.append("<span><b>");
+            htmlBuilder.append("<p style='text-align:right'><b>");
             htmlBuilder.append(context.getString(R.string.raport_work_hours));
             htmlBuilder.append(": </b>");
-            htmlBuilder.append(cursor.getInt(5));
-            htmlBuilder.append("</span><hr /><br /></div>");
+            htmlBuilder.append(cursor.getDouble(5));
+            htmlBuilder.append("</p><hr /><br /></div></div>");
+            sumHours += cursor.getDouble(5);
             cursor.moveToNext();
         }
+
+        htmlBuilder.append("<span><p style='text-align:right'><b>");
+        htmlBuilder.append(context.getString(R.string.raport_total_hours));
+        htmlBuilder.append(": </b>");
+        htmlBuilder.append(sumHours);
+        htmlBuilder.append("</p></span>");
 
         htmlBuilder.append("</body></html>");
 
