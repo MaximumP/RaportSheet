@@ -10,12 +10,16 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import de.schumann.max.raportsheet.R;
 
 /**
  * Created by max on 09.06.16.
+ *
+ * Prints a raport set from a given Cursor.
+ *
  */
 public class Printer {
 
@@ -60,14 +64,34 @@ public class Printer {
                 "</style><meta charset='UTF-8'></head><body>");
 
         cursor.moveToFirst();
-
+        Date curDate;
+        Date prevDate = null;
         while(!cursor.isAfterLast()) {
+
+            curDate = new Date(cursor.getLong(1));
+            if (prevDate != null) {
+                if (isSameDay(curDate, prevDate)) {
+                    sumHours += cursor.getDouble(5);
+                } else {
+                    htmlBuilder.append("<span><p style='text-align:right'><b>");
+                    htmlBuilder.append(context.getString(R.string.raport_total_hours));
+                    htmlBuilder.append(" ");
+                    htmlBuilder.append(getDateFromTicksString(cursor.getLong(1)));
+                    htmlBuilder.append(": </b>");
+                    htmlBuilder.append(sumHours);
+                    htmlBuilder.append("</p></span>");
+                    sumHours = 0.0d;
+                }
+            } else {
+                sumHours += cursor.getDouble(5);
+            }
+
             htmlBuilder.append("<div><div>");
             // date
             htmlBuilder.append("<span class='date'><b>");
             htmlBuilder.append(context.getString(R.string.raport_date));
             htmlBuilder.append(": </b>");
-            htmlBuilder.append(getDateFromTicksString(cursor.getString(1)));
+            htmlBuilder.append(getDateFromTicksString(cursor.getLong(1)));
             htmlBuilder.append("</span>");
             // customer
             htmlBuilder.append("<span class='customer'><b>");
@@ -94,26 +118,29 @@ public class Printer {
             htmlBuilder.append(": </b>");
             htmlBuilder.append(cursor.getDouble(5));
             htmlBuilder.append("</p><hr /><br /></div></div>");
-            sumHours += cursor.getDouble(5);
+
+            prevDate = curDate;
             cursor.moveToNext();
         }
-
-        htmlBuilder.append("<span><p style='text-align:right'><b>");
-        htmlBuilder.append(context.getString(R.string.raport_total_hours));
-        htmlBuilder.append(": </b>");
-        htmlBuilder.append(sumHours);
-        htmlBuilder.append("</p></span>");
 
         htmlBuilder.append("</body></html>");
 
         return htmlBuilder.toString();
     }
 
-    private String getDateFromTicksString(String sTicks) {
-        long ticks;
+    private boolean isSameDay(Date date1, Date date2) {
+        Calendar c1 = Calendar.getInstance(context.getResources().getConfiguration().locale);
+        Calendar c2 = Calendar.getInstance(context.getResources().getConfiguration().locale);
+        c1.setTime(date1);
+        c2.setTime(date2);
+
+        return c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR)
+                && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private String getDateFromTicksString(long ticks) {
         Date date;
 
-        ticks = Long.parseLong(sTicks);
         date = new Date(ticks);
 
         return new SimpleDateFormat("dd.MM.yyyy", context.getResources().getConfiguration().locale).format(date);

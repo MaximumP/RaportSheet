@@ -18,4 +18,5 @@
     <string name="error_date_format">Falsches Datumsformat t.M.jj</string>
     <string name="action_delete_raport">Raport löschen</string>
     <string name="raport_total_hours">Gesammt Stunden</string>
+    <string name="week">KW</string>
 </resources>
