@@ -18,4 +18,13 @@
         android:layout_margin="@dimen/text_margin"
         android:textAppearance="?attr/textAppearanceListItem"
         />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/printed"
+        android:src="@drawable/ic_print_black_24dp"
+        android:contentDescription=""
+        android:layout_gravity="center|right"
+        android:visibility="invisible"/>
 </LinearLayout>

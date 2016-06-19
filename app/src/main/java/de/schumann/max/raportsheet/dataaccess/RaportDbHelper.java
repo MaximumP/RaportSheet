@@ -11,7 +11,7 @@ import de.schumann.max.raportsheet.dataaccess.RaportContract.RaportEntry;
  */
 public class RaportDbHelper extends SQLiteOpenHelper{
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "raport.db";
 
     public RaportDbHelper(Context context) {
@@ -26,7 +26,7 @@ public class RaportDbHelper extends SQLiteOpenHelper{
                 RaportEntry.COLUMN_RAPORT_CUSTOMER_CITY + " TEXT NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_WORK_DESCRIPTION + " TEXT NOT NULL, " +
                 RaportEntry.COLUMN_RAPORT_WORK_HOURS + " REAL NOT NULL," +
-                RaportEntry.COLUMN_RAPORT_PRINTED + "INTEGER DEFAULT 0);";
+                RaportEntry.COLUMN_RAPORT_PRINTED + " INTEGER DEFAULT 0);";
 
         sqLiteDatabase.execSQL(SQL_CREATE_RAPORT_TABLE);
     }

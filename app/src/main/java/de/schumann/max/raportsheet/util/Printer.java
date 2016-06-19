@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
 import android.print.PrintManager;
 import android.util.Log;
 import android.webkit.WebView;

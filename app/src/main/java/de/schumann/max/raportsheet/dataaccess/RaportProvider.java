@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 public class RaportProvider extends ContentProvider {
 
@@ -26,13 +27,14 @@ public class RaportProvider extends ContentProvider {
                 RaportContract.RaportEntry._ID + " = ? ";
 
     private static final String raportsBetweenDatesSelection =
-                RaportContract.RaportEntry.COLUMN_RAPORT_DATE + " >= ? AND " +
+                RaportContract.RaportEntry.COLUMN_RAPORT_DATE + ">=? AND " +
                     RaportContract.RaportEntry.COLUMN_RAPORT_DATE + " <= ? ";
 
     private Cursor getRaport(Uri uri, String[] projection, String sortOrder) {
         String id = uri.getPathSegments().get(1);
         String[] selectionArgs = new String[]{ id };
         String selection = raportByIdSelection;
+        queryBuilder.setTables(RaportContract.RaportEntry.TABLE_NAME);
         return queryBuilder.query(dbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -58,7 +60,7 @@ public class RaportProvider extends ContentProvider {
         String dateTo = uri.getPathSegments().get(2);
         String[] selectionArgs = new String[]{ dateFrom, dateTo };
         String selection = raportsBetweenDatesSelection;
-
+        queryBuilder.setTables(RaportContract.RaportEntry.TABLE_NAME);
         return queryBuilder.query(dbHelper.getReadableDatabase(),
                 projection,
                 selection,
@@ -143,7 +145,8 @@ public class RaportProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
 
         Cursor cursor;
-        switch (uriMatcher.match(uri)) {
+        int match = uriMatcher.match(uri);
+        switch (match) {
             case RAPORT:
                 cursor = getRaport(uri, projection, sortOrder);
                 break;
@@ -211,7 +214,7 @@ public class RaportProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT + "/#", RAPORT);
         matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT, RAPORTS);
-        matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT + "/*/*", RAPORTS_BETWEEN_DATES);
+        matcher.addURI(RaportContract.CONTENT_AUTHORITY, RaportContract.PATH_RAPORT + "/#/#", RAPORTS_BETWEEN_DATES);
         return matcher;
     }
 }

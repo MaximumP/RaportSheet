@@ -8,4 +8,10 @@
         android:title="@string/action_print"
         android:icon="@drawable/ic_print_white_24dp"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_select_date"
+        android:orderInCategory="98"
+        android:title="@string/action_select_week"
+        android:icon="@drawable/ic_date_range_white_24dp"
+        app:showAsAction="ifRoom"/>
 </menu>

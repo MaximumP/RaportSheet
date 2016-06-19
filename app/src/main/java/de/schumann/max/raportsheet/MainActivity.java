@@ -9,9 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 
-public class MainActivity
-        extends AppCompatActivity
-        implements RaportListFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,15 +18,10 @@ public class MainActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState != null) {
-            return;
-        }
-
-        if (findViewById(R.id.fragment_container) != null) {
-            final RaportListFragment raportListFragment = new RaportListFragment();
-            raportListFragment.setArguments(getIntent().getExtras());
+        if (savedInstanceState == null && findViewById(R.id.fragment_container) != null) {
+            final RaportListFragment listFragment = RaportListFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, raportListFragment).commit();
+                    .add(R.id.fragment_container, listFragment).commit();
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -41,11 +34,5 @@ public class MainActivity
                 }
             });
         }
-    }
-
-
-    @Override
-    public void onListFragmentInteraction(Cursor item) {
-
     }
 }

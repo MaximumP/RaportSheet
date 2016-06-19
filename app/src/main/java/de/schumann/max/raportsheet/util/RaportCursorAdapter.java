@@ -3,6 +3,8 @@ package de.schumann.max.raportsheet.util;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -32,5 +34,13 @@ public class RaportCursorAdapter extends SimpleCursorAdapter {
             text = new SimpleDateFormat("dd.MM.yyyy", v.getResources().getConfiguration().locale).format(date);
         }
         super.setViewText(v, text);
+    }
+
+    @Override
+    public void setViewImage(ImageView v, String value) {
+        if (v.getId() == R.id.printed && !value.equals("0")) {
+            v.setVisibility(View.VISIBLE);
+        } else
+            super.setViewImage(v, value);
     }
 }

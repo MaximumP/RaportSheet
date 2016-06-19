@@ -3,12 +3,10 @@ package de.schumann.max.raportsheet;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import de.schumann.max.raportsheet.model.Raport;
 
-public class DetailActivity extends AppCompatActivity
-        implements RaportDetailFragment.OnFragmentInteractionListener {
+public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_RAPORT_ITEM = "de.schumann.max.raportsheet.EXTRA_RAPORT_ITEM";
 
@@ -31,10 +29,5 @@ public class DetailActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.detail_container, detailFragment).commit();
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Raport raport) {
-        Log.v("Something", "happened");
     }
 }

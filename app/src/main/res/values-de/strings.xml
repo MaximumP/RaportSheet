@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RaportSheet</string>
+    <string name="app_name">RaportListe</string>
     <string name="action_settings">Einstellungen</string>
     <string name="customer_name">Name</string>
     <string name="customer_phone">Tel. Nummer</string>
@@ -18,5 +18,7 @@
     <string name="error_date_format">Falsches Datumsformat t.M.jj</string>
     <string name="action_delete_raport">Raport löschen</string>
     <string name="raport_total_hours">Gesammt Stunden</string>
-    <string name="week">KW</string>
+    <string name="action_select_week">KW wählen</string>
+    <string name="select_week">KW</string>
+    <string name="select_day">Tag</string>
 </resources>

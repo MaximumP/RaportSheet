@@ -18,4 +18,7 @@
     <string name="error_date_format">Wrong date format d.M.yy</string>
     <string name="action_delete_raport">Delete raport</string>
     <string name="raport_total_hours">Total hours</string>
+    <string name="action_select_week">Select week</string>
+    <string name="select_week">Select week</string>
+    <string name="select_day">Select day</string>
 </resources>

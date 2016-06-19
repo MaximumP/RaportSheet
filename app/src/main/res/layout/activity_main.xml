@@ -31,8 +31,8 @@
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
     </LinearLayout>
-    <!--<include layout="@layout/raport_list_view"/>-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

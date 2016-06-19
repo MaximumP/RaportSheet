@@ -1,7 +1,6 @@
 package de.schumann.max.raportsheet;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +23,6 @@ import de.schumann.max.raportsheet.model.Raport;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link RaportDetailFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link RaportDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -87,17 +84,18 @@ public class RaportDetailFragment extends Fragment {
         customerCity = (TextView) view.findViewById(R.id.raport_city_text);
         workDescription = (TextView) view.findViewById(R.id.raport_work_description);
         workHours = (TextView) view.findViewById(R.id.raport_work_minutes);
-        //addCustomer = (Button) view.findViewById(R.id.add_customer_button);
 
         String sDate;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy", locale);
+
         if (raport != null) {
             sDate = dateFormat.format(raport.getDate());
             date.setText(sDate);
             customerName.setText(raport.getCustomer());
             customerCity.setText(raport.getCustomer());
             workDescription.setText(raport.getWorkDescription());
-            workHours.setText(Double.toString(raport.getWorkHours()));
+            workHours.setText(String.format(getContext().getResources().getConfiguration().locale,
+                    "%.1f", raport.getWorkHours()));
         } else {
             Date today = new Date();
             sDate = dateFormat.format(today);
@@ -110,6 +108,8 @@ public class RaportDetailFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_detail, menu);
+        if (raport == null || raport.getId() == 0)
+            menu.findItem(R.id.action_delete_raport).setVisible(false);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -150,23 +150,6 @@ public class RaportDetailFragment extends Fragment {
         bundle.putSerializable(Raport.RAPORT_MODEL, raport);
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            //mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
-    }
-
     private void saveRaport(){
         //TODO: validate
         Date inDate;
@@ -200,20 +183,5 @@ public class RaportDetailFragment extends Fragment {
                     .delete(RaportEntry.CONTENT_URI, "_id = ?",
                             new String[] {Long.toString(raport.getId())});
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Raport raport);
     }
 }
