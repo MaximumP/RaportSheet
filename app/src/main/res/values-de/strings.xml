@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">RaportListe</string>
+    <string name="app_name">Raport Liste</string>
     <string name="action_settings">Einstellungen</string>
     <string name="customer_name">Name</string>
     <string name="customer_phone">Tel. Nummer</string>
