@@ -174,12 +174,13 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
                 uri = RaportContract.RaportEntry.buildRaportUriWithDates(from, to);
                 break;
         }
+        String orderBy = RaportContract.RaportEntry.COLUMN_RAPORT_DATE + " ASC";
         return new CursorLoader(getContext(),
                 uri,
                 projection,
                 null,
                 null,
-                null);
+                orderBy);
     }
 
     @Override
@@ -197,9 +198,9 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
         String[] projection = new String[]{
                 RaportContract.RaportEntry.COLUMN_RAPORT_DATE,
                 RaportContract.RaportEntry.COLUMN_RAPORT_CUSTOMER_NAME,
-                RaportContract.RaportEntry.COLUMN_RAPORT_PRINTED
+                RaportContract.RaportEntry.COLUMN_RAPORT_WORK_HOURS
         };
-        int [] to = new int[]{ R.id.id, R.id.content, R.id.printed };
+        int [] to = new int[]{ R.id.id, R.id.content, R.id.time };
 
         // Set the adapter
         getLoaderManager().initLoader(WEEK_LOADER, null, this);

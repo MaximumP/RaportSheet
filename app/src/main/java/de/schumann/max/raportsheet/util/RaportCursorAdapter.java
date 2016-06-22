@@ -38,9 +38,9 @@ public class RaportCursorAdapter extends SimpleCursorAdapter {
 
     @Override
     public void setViewImage(ImageView v, String value) {
-        if (v.getId() == R.id.printed && !value.equals("0")) {
+        /*if (v.getId() == R.id.printed && !value.equals("0")) {
             v.setVisibility(View.VISIBLE);
-        } else
+        } else*/
             super.setViewImage(v, value);
     }
 }

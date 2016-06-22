@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
-import android.print.PrintJob;
 import android.print.PrintManager;
 import android.util.Log;
 import android.webkit.WebView;
@@ -61,7 +60,7 @@ public class Printer {
         StringBuilder htmlBuilder = new StringBuilder();
         Double sumHours = 0.0d;
         htmlBuilder.append("<!DOCTYPE HTML><html><head><style type='text/css'>" +
-                ".date,.customer {padding-right: 4em;}" +
+                ".date,.customer {padding-right: 4em;} .sum {text-decoration: underline; text-align: right;}" +
                 "</style><meta charset='UTF-8'></head><body>");
 
         cursor.moveToFirst();
@@ -70,29 +69,26 @@ public class Printer {
         while(!cursor.isAfterLast()) {
 
             curDate = new Date(cursor.getLong(1));
-            if (prevDate != null) {
-                if (isSameDay(curDate, prevDate)) {
-                    sumHours += cursor.getDouble(5);
-                } else {
-                    htmlBuilder.append("<span><p style='text-align:right'><b>");
-                    htmlBuilder.append(context.getString(R.string.raport_total_hours));
-                    htmlBuilder.append(" ");
-                    htmlBuilder.append(getDateFromTicksString(cursor.getLong(1)));
-                    htmlBuilder.append(": </b>");
-                    htmlBuilder.append(sumHours);
-                    htmlBuilder.append("</p></span>");
-                    sumHours = 0.0d;
-                }
-            } else {
-                sumHours += cursor.getDouble(5);
+
+            if (prevDate != null && !isSameDay(curDate, prevDate)) {
+                htmlBuilder.append("<span><p class='sum'><b>");
+                htmlBuilder.append(context.getString(R.string.raport_total_hours));
+                htmlBuilder.append(" ");
+                htmlBuilder.append(getDateString(prevDate));
+                htmlBuilder.append(": </b>");
+                htmlBuilder.append(sumHours);
+                htmlBuilder.append("</p></span><br /><br /><hr />");
+                sumHours = 0.0d;
             }
+
+            sumHours += cursor.getDouble(5);
 
             htmlBuilder.append("<div><div>");
             // date
             htmlBuilder.append("<span class='date'><b>");
             htmlBuilder.append(context.getString(R.string.raport_date));
             htmlBuilder.append(": </b>");
-            htmlBuilder.append(getDateFromTicksString(cursor.getLong(1)));
+            htmlBuilder.append(getDateString(curDate));
             htmlBuilder.append("</span>");
             // customer
             htmlBuilder.append("<span class='customer'><b>");
@@ -139,11 +135,7 @@ public class Printer {
                 && c1.get(Calendar.DAY_OF_YEAR) == c2.get(Calendar.DAY_OF_YEAR);
     }
 
-    private String getDateFromTicksString(long ticks) {
-        Date date;
-
-        date = new Date(ticks);
-
+    private String getDateString(Date date) {
         return new SimpleDateFormat("dd.MM.yyyy", context.getResources().getConfiguration().locale).format(date);
     }
 }

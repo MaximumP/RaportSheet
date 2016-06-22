@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -92,7 +93,7 @@ public class RaportDetailFragment extends Fragment {
             sDate = dateFormat.format(raport.getDate());
             date.setText(sDate);
             customerName.setText(raport.getCustomer());
-            customerCity.setText(raport.getCustomer());
+            customerCity.setText(raport.getCity());
             workDescription.setText(raport.getWorkDescription());
             workHours.setText(String.format(getContext().getResources().getConfiguration().locale,
                     "%.1f", raport.getWorkHours()));
@@ -155,9 +156,12 @@ public class RaportDetailFragment extends Fragment {
         Date inDate;
         double hours;
         long ticks;
+        NumberFormat numberFormat = NumberFormat.
+                getNumberInstance(getContext().getResources().getConfiguration().locale);
         try {
             inDate = new SimpleDateFormat("d.M.yy", locale).parse(date.getText().toString());
-            hours = Double.parseDouble(workHours.getText().toString());
+            Number number = numberFormat.parse(workHours.getText().toString());
+            hours = number.doubleValue();
             ticks = inDate.getTime();
         } catch (ParseException e) {
             date.setError(getString(R.string.error_date_format));
