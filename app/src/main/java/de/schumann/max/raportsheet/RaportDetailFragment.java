@@ -156,12 +156,10 @@ public class RaportDetailFragment extends Fragment {
         Date inDate;
         double hours;
         long ticks;
-        NumberFormat numberFormat = NumberFormat.
-                getNumberInstance(getContext().getResources().getConfiguration().locale);
+
         try {
             inDate = new SimpleDateFormat("d.M.yy", locale).parse(date.getText().toString());
-            Number number = numberFormat.parse(workHours.getText().toString());
-            hours = number.doubleValue();
+            hours = Double.parseDouble(workHours.getText().toString().replace(',', '.'));
             ticks = inDate.getTime();
         } catch (ParseException e) {
             date.setError(getString(R.string.error_date_format));

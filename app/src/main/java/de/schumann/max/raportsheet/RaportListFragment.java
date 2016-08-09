@@ -163,7 +163,7 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
                     calendar.add(Calendar.DATE, -1);
                 }
                 from = calendar.getTime();
-                long oneWeekTicks = 86400L * 7L * 1000L;
+                long oneWeekTicks = 86400L * 6L * 1000L;
                 to = new Date(from.getTime() + oneWeekTicks);
                 uri = RaportContract.RaportEntry.buildRaportUriWithDates(from, to);
                 break;

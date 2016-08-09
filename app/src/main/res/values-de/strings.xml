@@ -15,9 +15,9 @@
     <string name="title_activity_detail">Raport details</string>
     <string name="action_save_raport">Raport speichern</string>
     <string name="action_print">Drucken</string>
-    <string name="error_date_format">Falsches Datumsformat t.M.jj</string>
+    <string name="error_date_format">Falsches Datumsformat tt.MM.jj</string>
     <string name="action_delete_raport">Raport löschen</string>
-    <string name="raport_total_hours">Gesammt Stunden</string>
+    <string name="raport_total_hours">Gesamt Stunden</string>
     <string name="action_select_week">KW wählen</string>
     <string name="select_week">KW</string>
     <string name="select_day">Tag</string>

@@ -71,7 +71,8 @@
             android:layout_gravity="center_horizontal"
             android:ems="10"
             android:hint="@string/raport_work_hours"
-            android:inputType="number|numberDecimal" />
+            android:inputType="number|numberDecimal"
+            android:numeric="decimal" />
 
     </LinearLayout>
 </ScrollView>
