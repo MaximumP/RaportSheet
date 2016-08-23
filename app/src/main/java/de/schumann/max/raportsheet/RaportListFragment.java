@@ -43,6 +43,7 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
 
     private final static int WEEK_LOADER = 0;
     private final static int DAY_LOADER = 1;
+    private final static int MONTH_LOADER = 2;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -83,6 +84,7 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
         datePicker = (DatePicker) datePickerControl.findViewById(R.id.datePicker);
         Button selectWeekBtn = (Button) datePickerControl.findViewById(R.id.select_week_btn);
         Button selectDayBtn  = (Button) datePickerControl.findViewById(R.id.select_day_btn);
+        Button selectMonthBtn = (Button) datePickerControl.findViewById(R.id.select_month_btn);
 
         selectWeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +98,14 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
             @Override
             public void onClick(View view) {
                 getLoaderManager().restartLoader(DAY_LOADER, null, _this);
+                datePickerControl.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        selectMonthBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                getLoaderManager().restartLoader(MONTH_LOADER, null, _this);
                 datePickerControl.setVisibility(View.INVISIBLE);
             }
         });
@@ -163,7 +173,7 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
                     calendar.add(Calendar.DATE, -1);
                 }
                 from = calendar.getTime();
-                long oneWeekTicks = 86400L * 6L * 1000L;
+                long oneWeekTicks = (86400L * 7L * 1000L) -1L;
                 to = new Date(from.getTime() + oneWeekTicks);
                 uri = RaportContract.RaportEntry.buildRaportUriWithDates(from, to);
                 break;
@@ -171,6 +181,13 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
                 from = calendar.getTime();
                 long oneDayTicks = 84600L * 1000L;
                 to = new Date(from.getTime() + oneDayTicks);
+                uri = RaportContract.RaportEntry.buildRaportUriWithDates(from, to);
+                break;
+            case MONTH_LOADER:
+                calendar.set(Calendar.DAY_OF_MONTH, 1);
+                from = calendar.getTime();
+                calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+                to = calendar.getTime();
                 uri = RaportContract.RaportEntry.buildRaportUriWithDates(from, to);
                 break;
         }

@@ -21,4 +21,5 @@
     <string name="action_select_week">KW wählen</string>
     <string name="select_week">KW</string>
     <string name="select_day">Tag</string>
+    <string name="select_month">Monat</string>
 </resources>

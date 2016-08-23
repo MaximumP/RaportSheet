@@ -1,7 +1,9 @@
 package de.schumann.max.raportsheet.util;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
@@ -30,7 +32,7 @@ public class Printer {
         this.context = context;
     }
 
-    public void printHtml(Cursor cursor){
+    public void printHtml(final Cursor cursor){
         webView = new WebView(context);
         webView.setWebViewClient(new WebViewClient() {
 
@@ -41,19 +43,34 @@ public class Printer {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                createWebPrintJob(view);
+                createWebPrintJob(view, cursor);
                 webView = null;
             }
         });
         String html = createHtml(cursor);
-        Log.i("Print content", html);
         webView.loadData(html, "text/HTML; charset=utf-8", "utf-8");
     }
 
-    private void createWebPrintJob(WebView view) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void createWebPrintJob(WebView view, Cursor cursor) {
         PrintManager printManager = (PrintManager) context.getSystemService(Context.PRINT_SERVICE);
-        PrintDocumentAdapter documentAdapter = view.createPrintDocumentAdapter();
-        printManager.print("test", documentAdapter, new PrintAttributes.Builder().build());
+        PrintDocumentAdapter documentAdapter;
+        String jobName = createJobName(cursor);
+        int currentApiVersion = Build.VERSION.SDK_INT;
+        if (currentApiVersion < Build.VERSION_CODES.LOLLIPOP) {
+            documentAdapter = view.createPrintDocumentAdapter();
+        } else {
+            documentAdapter = view.createPrintDocumentAdapter(jobName);
+        }
+        printManager.print(jobName, documentAdapter, new PrintAttributes.Builder().build());
+    }
+
+    private String createJobName(Cursor cursor) {
+        cursor.moveToFirst();
+        Date first = new Date(cursor.getLong(1));
+        cursor.moveToLast();
+        Date last = new Date(cursor.getLong(1));
+        return getDateString(first) + " - " + getDateString(last);
     }
 
     private String createHtml(Cursor cursor) {
@@ -65,6 +82,7 @@ public class Printer {
 
         cursor.moveToFirst();
         Date curDate;
+        int month = getMonth(new Date(cursor.getLong(1)));
         Date prevDate = null;
         while(!cursor.isAfterLast()) {
 
@@ -80,6 +98,10 @@ public class Printer {
                 htmlBuilder.append("</p></span><br /><br /><hr />");
                 sumHours = 0.0d;
             }
+
+
+            if (month != getMonth(curDate))
+                break;
 
             sumHours += cursor.getDouble(5);
 
@@ -123,6 +145,12 @@ public class Printer {
         htmlBuilder.append("</body></html>");
 
         return htmlBuilder.toString();
+    }
+
+    private int getMonth(Date date){
+        Calendar cal = Calendar.getInstance(context.getResources().getConfiguration().locale);
+        cal.setTime(date);
+        return cal.get(Calendar.MONTH);
     }
 
     private boolean isSameDay(Date date1, Date date2) {

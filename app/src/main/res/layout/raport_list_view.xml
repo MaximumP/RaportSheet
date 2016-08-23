@@ -61,6 +61,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/select_day"
                     android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/select_month_btn"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/select_month"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>
