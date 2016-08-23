@@ -19,7 +19,7 @@
     <string name="action_delete_raport">Raport löschen</string>
     <string name="raport_total_hours">Gesamt Stunden</string>
     <string name="action_select_week">KW wählen</string>
-    <string name="select_week">KW</string>
+    <string name="select_week">Woche</string>
     <string name="select_day">Tag</string>
     <string name="select_month">Monat</string>
 </resources>
