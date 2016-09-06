@@ -22,4 +22,5 @@
     <string name="select_week">Week</string>
     <string name="select_day">Day</string>
     <string name="select_month">Month</string>
+    <string name="action_backup_db">Backup database</string>
 </resources>

@@ -14,4 +14,10 @@
         android:title="@string/action_select_week"
         android:icon="@drawable/ic_date_range_white_24dp"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_backup_db"
+        android:orderInCategory="97"
+        android:title=""
+        android:icon="@drawable/ic_backup_white_24dp"
+        app:shownAsAction="never"/>
 </menu>

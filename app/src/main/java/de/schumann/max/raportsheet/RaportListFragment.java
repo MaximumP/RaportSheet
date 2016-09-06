@@ -125,11 +125,13 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
+            case R.id.action_backup_db:
+
+                return true;
             case R.id.action_print:
                 Cursor cursor = cursorAdapter.getCursor();
                 Printer printer = new Printer(getContext());
                 printer.printHtml(cursor);
-                markPrinted(cursor);
                 return true;
             case R.id.action_select_date:
                 if (datePickerControl.getVisibility() == View.VISIBLE)
@@ -140,10 +142,6 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void markPrinted(Cursor cursor) {
-
     }
 
     @Override
@@ -230,5 +228,9 @@ public class RaportListFragment extends Fragment implements LoaderManager.Loader
                 CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
 
         listView.setAdapter(cursorAdapter);
+    }
+
+    private void saveDbBackup() {
+
     }
 }
