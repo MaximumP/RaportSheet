@@ -19,5 +19,5 @@
         android:orderInCategory="97"
         android:title=""
         android:icon="@drawable/ic_backup_white_24dp"
-        app:shownAsAction="never"/>
+        app:showAsAction="never"/>
 </menu>
